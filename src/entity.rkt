@@ -6,18 +6,20 @@
 (require racket/class
          racket/gui/base
          racket/function)
-(require "keystate.rkt")
+(require "keystate.rkt"
+         "entity-controller.rkt")
 
 (provide entity% (all-from-out "keystate.rkt"))
 
 (define entity%
   (class object%
     (super-new)
-    (init-field [parent #f] [stride 0] [pos-x #f] [pos-y #f] [facing #f]
-                [on-draw #f]
+    (init-field [parent #f]
+                [stride 0] [health 0] [damage 0]
+                [pos-x #f] [pos-y #f] [height #f] [width #f] [facing #f]
+                [on-draw #f] [on-collision #f]
                 [keystate-triggers '()])
     (field [cull? #f])
-    (field [entity-lst '()])
 
     ((thunk
        (when parent
@@ -32,27 +34,10 @@
       (λ ()
         cull?))
 
-    (define/public add-entity
-      (λ (e)
-        (set! entity-lst (cons e entity-lst))))
-
-    (define/public remove-entity
-      (λ (e)
-        (set! entity-lst (remove* (list e) entity-lst))))
-
-    (define/public entity-lst-cull
-      (λ ()
-        (set! entity-lst (filter (λ (e)
-                                   (not (send e should-cull?)))
-                                 entity-lst))))
-
     (define/public draw
       (λ (dc)
         (on-draw dc)
-        (entity-lst-cull)
-        (for-each (λ (e)
-                    (send e draw dc))
-                  entity-lst)))
+        (send entity-controller entity-lst-cull)))
 
     (define/private pos-x-set!
       (λ (val)
@@ -77,6 +62,28 @@
             [(DR) (move 'D 'R)])
           (set! facing dir))
         (unless (null? rst)
-          (send/apply this move rst))))))
+          (send/apply this move rst))))
+
+    (define/public collides-with?
+      (λ (e)
+        (let ([x0 pos-x] [y0 pos-y] [w0 width] [h0 height]
+              [x1 (get-field pos-x e)] [y1 (get-field pos-y e)]
+              [w1 (get-field width e)] [h1 (get-field height e)])
+          (or
+            (and (<= x0 x1) (<= x1 (+ x1 w0))
+                 (<= y0 y1) (<= y1 (+ y0 h0)))
+            (and (<= x1 x0) (<= x0 (+ x1 w1))
+                 (<= y1 y0) (<= y0 (+ y1 h1)))))))
+
+    (define/public collision
+      (λ (e)
+        (when on-collision
+          (on-collision e))))
+
+    (define/public hurt
+      (λ (n)
+        (set! health (- health n)) ; TODO add game over
+        (when (<= health 0)
+          (printf "~a\n" "game over"))))))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:

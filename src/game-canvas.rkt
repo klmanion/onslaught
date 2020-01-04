@@ -5,8 +5,9 @@
 (require racket/class
          racket/gui/base
          racket/function)
-(require "hero.rkt"
-         "keyrep.rkt")
+(require "hero.rkt" "enemy.rkt"
+         "keyrep.rkt"
+         "entity-controller.rkt")
 
 (provide game-canvas%)
 
@@ -18,11 +19,12 @@
     (field [keyrep (new keyrep%)]
            [timer (new timer% [notify-callback (thunk (send this refresh))]
                               [interval 42])])
-    (field [hero (new hero% [pos-x 100] [pos-y 100] [facing 'R] [stride 5])]
-           [entity-lst '()])
+    (field [hero (new hero% [pos-x 100] [pos-y 100] [facing 'R] [stride 5])])
 
     ((thunk
-       (send keyrep load-entity hero)))
+       (send keyrep load-entity hero)
+       (spawn-entity hero)
+       (spawn-entity (new enemy% [pos-x 50] [pos-y 50] [width 10] [height 10]))))
 
     (define/override on-paint
       (λ ()
@@ -32,10 +34,8 @@
                  (set-smoothing 'unsmoothed)
                  (clear))
           (send keyrep check-keystates)
-          (send hero draw dc)
-          (for-each (λ (e)
-                      (send e draw dc))
-                    entity-lst))))
+          (send entity-controller check-collisions)
+          (send entity-controller draw dc))))
 
     (define/override on-size
       (λ (width height)
@@ -48,3 +48,4 @@
       (λ (ke)
         (send keyrep handle-key-event ke)))))
 
+;; vi: set ts=2 sw=2 expandtab lisp tw=79:

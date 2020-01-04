@@ -14,7 +14,7 @@
 (define bullet%
   (class entity% 
     (inherit-field pos-x pos-y)
-    (super-new [stride 3]
+    (super-new [stride 3] [width 3] [height 3]
                [on-draw (λ (dc)
                           (send this move 'facing)
                           (send dc set-pen (make-color #xFF #xFF #xFF) 1 'solid)
