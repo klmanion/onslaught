@@ -5,15 +5,16 @@
 (require racket/class
          racket/gui/base
          racket/function)
-(require "hero.rkt" "enemy.rkt"
+(require "defs.rkt"
+         "hero.rkt" "enemy.rkt"
          "entity-controller.rkt")
 
 (provide game-canvas%)
 
 (define game-canvas%
   (class canvas%
-    (super-new [min-width 485]
-               [min-height 300])
+    (super-new [min-width SCREEN-WIDTH]
+               [min-height SCREEN-HEIGHT])
     (inherit get-dc)
     (field [timer (new timer% [notify-callback (thunk (send this refresh))]
                               [interval 42])])
