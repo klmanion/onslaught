@@ -3,6 +3,8 @@
 
 #lang racket/base
 
+(provide (all-defined-out))
+
 (define SCREEN-WIDTH 485)
 (define SCREEN-HEIGHT 300)
 
