@@ -28,6 +28,7 @@
 
     (define/public draw
       (λ (dc)
+        (entity-lst-cull)
         (for-each (λ (e)
                     (send e draw dc))
                   entity-lst)))

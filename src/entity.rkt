@@ -59,7 +59,8 @@
             [(DL) (move 'D 'L)]
             [(D)  (pos-y-set! (+ pos-y stride))]
             [(DR) (move 'D 'R)])
-          (set! facing dir))
+          (set! facing dir)
+          (send controller check-collisions))
         (unless (null? rst)
           (send/apply this move rst))))
 

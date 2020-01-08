@@ -27,7 +27,6 @@
                  (set-background (make-color #x0 #x0 #x0))
                  (set-smoothing 'unsmoothed)
                  (clear))
-          (send entity-controller check-collisions)
           (send entity-controller draw dc)
           (send dc set-text-foreground (make-color #xFF #xFF #xFF))
           (send dc draw-text (format "wave: ~a" (get-field wave model))
