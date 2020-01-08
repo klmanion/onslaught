@@ -35,7 +35,7 @@
        (send keyrep load-keystates (list
                                      (new keystate% [seq (list #\space)]
                                           [callback (λ ()
-                                                      (send model next-wave))]
+                                                      (send this next-wave))]
                                           [no-hold #t])))))
     ((thunk
        (define hero (new hero% [pos-x 100] [pos-y 100] [facing 'R] [stride 5]
@@ -45,7 +45,10 @@
 
     (define/public start
       (λ ()
-        (send frame show #t)))))
+        (send frame show #t)))
 
+    (define/public next-wave
+      (λ ()
+        (send model next-wave)))))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:
