@@ -10,7 +10,7 @@
          "model.rkt"
          "keyrep.rkt" "keystate.rkt"
          "entity-controller.rkt"
-         "hero.rkt")
+         "hero.rkt" "enemy.rkt")
 
 (provide delegate%)
 
@@ -49,6 +49,16 @@
 
     (define/public next-wave
       (λ ()
-        (send model next-wave)))))
+        (send model next-wave)
+        (spawn-enemy)))
+
+    (define/private spawn-enemy
+      (λ ([n 1])
+        (cond [(= n 0) (void)]
+              [else (send entity-controller
+                          add-entity (new enemy%
+                                          [wave (get-field wave model)]
+                                          [controller entity-controller]))
+                    (spawn-enemy (- n 1))])))))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:

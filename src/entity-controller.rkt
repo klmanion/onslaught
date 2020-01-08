@@ -14,6 +14,7 @@
 
     (define/public add-entity
       (λ (e)
+        (printf "~a\n" "adding entity")
         (set! entity-lst (cons e entity-lst))))
 
     (define/public remove-entity
