@@ -6,15 +6,14 @@
 (require racket/class
          racket/gui/base
          racket/function)
-(require "keystate.rkt"
-         "entity-controller.rkt")
+(require "keystate.rkt")
 
 (provide entity% (all-from-out "keystate.rkt"))
 
 (define entity%
   (class object%
     (super-new)
-    (init-field [parent #f]
+    (init-field [parent #f] [controller #f]
                 [stride 0] [health 0] [damage 0]
                 [pos-x #f] [pos-y #f] [height #f] [width #f] [facing #f]
                 [on-draw #f] [on-collision #f]
@@ -37,7 +36,7 @@
     (define/public draw
       (λ (dc)
         (on-draw dc)
-        (send entity-controller entity-lst-cull)))
+        (send controller entity-lst-cull)))
 
     (define/private pos-x-set!
       (λ (val)

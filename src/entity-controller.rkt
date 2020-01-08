@@ -5,8 +5,7 @@
 
 (require racket/class)
 
-(provide entity-controller% entity-controller
-         spawn-entity)
+(provide entity-controller%)
 
 (define entity-controller%
   (class object%
@@ -39,11 +38,5 @@
           (for ([e1 (in-list (remove e0 entity-lst))])
             (when (send e0 collides-with? e1)
               (send e0 collision e1))))))))
-
-(define entity-controller (new entity-controller%))
-
-(define spawn-entity
-  (λ (e)
-    (send entity-controller add-entity e)))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:
