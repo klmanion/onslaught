@@ -24,8 +24,7 @@
 
     ((thunk
        (send keyrep load-entity hero)
-       (spawn-entity hero)
-       (spawn-entity (new enemy% [pos-x 50] [pos-y 50] [width 10] [height 10]))))
+       (spawn-entity hero)))
 
     (define/override on-paint
       (λ ()

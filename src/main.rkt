@@ -3,15 +3,11 @@
 
 #lang racket/base
 
-(require racket/class
-         racket/gui/base)
-(require "game-canvas.rkt")
-         
-(define f (new frame% [label "onslaught"] [style '(fullscreen-button)]))
+(require racket/class "delegate.rkt")
 
-(define cv (new game-canvas% [parent f]))
-    
+(define delegate (new delegate%))
+         
 (module+ main
-  (send f show #t))
+  (send delegate start))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:
