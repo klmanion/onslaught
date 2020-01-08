@@ -1,4 +1,4 @@
-;;;; game-controller
+;;;; model
 ;;
 
 #lang racket/base
@@ -7,10 +7,13 @@
          racket/gui/base
          racket/function)
 
-(provide game-controller%)
+(provide model% model)
 
-(define game-controller%
+(define model%
   (class object%
-    (super-new)))
+    (super-new)
+    (field [wave 0])))
+
+(define model (new model%))
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:

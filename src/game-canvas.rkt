@@ -5,7 +5,8 @@
 (require racket/class
          racket/gui/base
          racket/function)
-(require "hero.rkt" "enemy.rkt"
+(require "model.rkt"
+         "hero.rkt" "enemy.rkt"
          "keyrep.rkt"
          "entity-controller.rkt")
 
@@ -35,7 +36,10 @@
                  (clear))
           (send keyrep check-keystates)
           (send entity-controller check-collisions)
-          (send entity-controller draw dc))))
+          (send entity-controller draw dc)
+          (send dc set-text-foreground (make-color #xFF #xFF #xFF))
+          (send dc draw-text (format "wave: ~a" (get-field wave model))
+                   420 280))))
 
     (define/override on-size
       (λ (width height)
