@@ -12,7 +12,11 @@
 (define model%
   (class object%
     (super-new)
-    (field [wave 0])))
+    (field [wave 0])
+ 
+    (define/public next-wave
+      (λ ()
+        (set! wave (+ wave 1))))))
 
 (define model (new model%))
 

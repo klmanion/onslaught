@@ -8,7 +8,8 @@
          racket/draw)
 (require "entity.rkt"
          "bullet.rkt"
-         "entity-controller.rkt")
+         "entity-controller.rkt"
+         "model.rkt")
 
 (provide hero%)
 
@@ -30,7 +31,11 @@
                    (make-keystate (list #\d) (λ ()
                                                (send this move 'R)))
                    (make-keystate (list #\j) (λ ()
-                                               (send this fire))))]
+                                               (send this fire)))
+                   (new keystate% [seq (list #\space)]
+                                  [callback (λ ()
+                                              (send model next-wave))]
+                                  [no-hold #t]))]
                [health 10]
                [width 5] [height 5])
 

@@ -14,7 +14,8 @@
 (define keystate%
   (class object%
     (super-new)
-    (init-field [seq #f] [callback #f])
+    (init-field [seq #f] [callback #f] [no-hold #f])
+    (field [pressed #f])
 
     (define/public matches-keys
       (λ (key-lst)
@@ -24,10 +25,16 @@
 
     (define/public trigger
       (λ ()
-        (callback)))))
+        (when (or (eq? no-hold #f) (eq? pressed #f))
+          (set! pressed #t)
+          (callback))))
+
+    (define/public not-pressed
+      (λ ()
+        (set! pressed #f)))))
 
 (define make-keystate
-  (λ (seq cb)
-    (new keystate% [seq seq] [callback cb])))
+  (λ (seq cb) 
+    (new keystate% [seq seq] [callback cb]))) 
 
 ;; vi: set ts=2 sw=2 expandtab lisp tw=79:

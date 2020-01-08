@@ -44,9 +44,9 @@
 
     (define/private match-state
       (λ (state-lst)
-        (for ([state (in-list state-lst)]
-              #:when (matches-state? state))
-          (send state trigger))))
+        (for ([state (in-list state-lst)])
+          (cond [(matches-state? state) (send state trigger)]
+                [else (send state not-pressed)]))))
 
     (define/public load-keystates
       (λ (keystate-lst)
